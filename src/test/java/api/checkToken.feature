@@ -7,17 +7,15 @@ Feature: Este servicio recibe un token de autenticacion, confirma la veracidad d
     * configure headers = headers
 
   @checkToken
-  Scenario: Confirma la veracidad del token y devolver los permisos asociados al aplicativo que corresponda según el correlationID
+  Scenario: Confirma la veracidad del token y devolver los permisos asociados al aplicativo que corresponda segun el correlationID
 
    # Llamando a loginToken.feature para obtener el Token.
     * def loginResult = call read('classpath:api/loginToken.feature')
     * def authToken = loginResult.response.token
     * print 'Token obtenido del login:', authToken
 
-   # Construir request con el token
+   # Ejecutando scenario checkToken
     * def checkTokenRequest = { "token": "#(authToken)" }
-
-   # Ejecutar checkTokenRequest
     Given request checkTokenRequest
     When method POST
     Then status 200
@@ -33,18 +31,15 @@ Feature: Este servicio recibe un token de autenticacion, confirma la veracidad d
     * print '=== TOKEN JWT RECIBIDO ==='
     * print jwtTokenFromResponse
     
-    # Decodificar el JWT y mostrar los permisos de manera legible
+    # Decodificar el JWT y mostrar los permisos del usuario
     * def JwtUtil = Java.type('util.JwtUtil')
-    * def permisosFormateados = JwtUtil.formatPermissions(jwtTokenFromResponse)
-    * print permisosFormateados
+    * def permisosDecode = JwtUtil.formatPermissions(jwtTokenFromResponse)
+    * print permisosDecode
     
     # Extraer informacion detallada del token
     * def tokenInfo = JwtUtil.extractTokenInfo(jwtTokenFromResponse)
-    * print '=== INFORMACIÓN COMPLETA DEL TOKEN ==='
-    * print 'Subject:', tokenInfo.sub
-    * print 'Issuer:', tokenInfo.iss
+    * print '=== Usuario y Tiempo de expiracion de los permisos ==='
     * print 'Username:', tokenInfo.preferred_username
-    * print 'Issued At:', tokenInfo.iat
     * print 'Expiration:', tokenInfo.exp
     
     # Mostrar resumen de permisos

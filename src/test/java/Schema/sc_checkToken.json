@@ -13,7 +13,7 @@
         },
         "totalPageRecords": {
           "type": "integer",
-          "description": "Total de registros por página"
+          "description": "Total de registros por pagina"
         },
         "totalRecords": {
           "type": "integer",
