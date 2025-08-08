@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Schema de validacion para respuesta de checkToken",
+  "description": "Esquema que valida la estructura de respuesta del servicio checkToken",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "string",
+          "description": "Token JWT con los permisos y grupos codificados"
+        },
+        "totalPageRecords": {
+          "type": "integer",
+          "description": "Total de registros por pagina"
+        },
+        "totalRecords": {
+          "type": "integer",
+          "description": "Total de registros"
+        }
+      },
+      "required": ["records", "totalPageRecords", "totalRecords"]
+    },
+    "message": {
+      "type": "string",
+      "description": "Mensaje de respuesta del servicio"
+    },
+    "success": {
+      "type": "integer",
+      "description": "Indicador de éxito (1 = éxito, 0 = error)"
+    }
+  },
+  "required": ["data", "message", "success"],
+  "additionalProperties": false
+} 

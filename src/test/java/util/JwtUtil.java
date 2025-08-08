@@ -117,4 +117,37 @@ public class JwtUtil {
         Object value = map.get(key);
         return value != null ? value.toString() : "N/A";
     }
-} 
+    
+    /**
+     * Genera un token JWT sin permisos para testing
+     * Este método crea un token válido pero sin el claim grupoPermisos
+     */
+    public static String generateTokenWithoutPermissions() {
+        try {
+            // Crear el header JWT
+            String header = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
+            String encodedHeader = Base64.getUrlEncoder().withoutPadding().encodeToString(header.getBytes());
+            
+            // Crear el payload sin permisos
+            long currentTime = System.currentTimeMillis() / 1000;
+            long expirationTime = currentTime + 3600; // 1 hora de expiración
+            
+            String payload = String.format(
+                "{\"sub\":\"usuario_sin_permisos\",\"preferred_username\":\"usuario_sin_permisos\"," +
+                "\"iat\":%d,\"exp\":%d,\"iss\":\"test-issuer\"}", 
+                currentTime, expirationTime
+            );
+            String encodedPayload = Base64.getUrlEncoder().withoutPadding().encodeToString(payload.getBytes());
+            
+            // Crear la firma (simulada para testing)
+            String signature = "test_signature_without_permissions";
+            String encodedSignature = Base64.getUrlEncoder().withoutPadding().encodeToString(signature.getBytes());
+            
+            // Construir el token JWT completo
+            return encodedHeader + "." + encodedPayload + "." + encodedSignature;
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Error generando token sin permisos: " + e.getMessage(), e);
+        }
+    }
+}
